@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/17 15:45:12 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/18 10:11:22 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t	ft_strlen_nl(const char *str)
 	len = 0;
 	while (str[len] != '\0' && str[len] != '\n')
 		len++;
-	return (len);
+	return (len + 1 ); //the length returned includes the newline character itself
 }
 
 int	main(void)
@@ -36,6 +36,7 @@ int	main(void)
 	int			read_ret;
 	int			str;
 	static char	*processer;
+	char ** ret_arry;
 	int i;
 
 
@@ -65,11 +66,12 @@ int	main(void)
 
 		if (ft_strchr(processer, '\n') && *processer)
 		{
-			//create the line
+			//copy the line to a string
 			ret = ft_substr(processer, 0, ft_strlen_nl(processer));
 			printf("%s", ret);
 			return(0);
-			//trim it out
+			//trim it out from my static processor
+
 			//else just keep on reading
 		}
 	printf("%c\n", processer[0]);
