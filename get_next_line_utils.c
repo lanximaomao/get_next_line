@@ -6,9 +6,18 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/17 11:15:38 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/18 19:52:34 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+size_t	ft_strlen_nl(const char *str)
+{
+	size_t	len;
+
+	len = 0;
+	while (str[len] != '\0' && str[len] != '\n')
+		len++;
+	return (len);
+}

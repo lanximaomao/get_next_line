@@ -6,102 +6,166 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/17 15:45:12 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/18 19:58:41 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-//char	*get_next_line(int fd)
-//{
-
-//	return (NULL);
-//}
-
-size_t	ft_strlen_nl(const char *str)
+size_t	ft_strlen(const char *str)
 {
 	size_t	len;
 
 	len = 0;
-	while (str[len] != '\0' && str[len] != '\n')
+	while (str[len] != '\0')
 		len++;
 	return (len);
 }
 
-int	main(void)
+char	*ft_strchr(const char *s, int c)
 {
-	int			fd;
-	char		*buf;
-	char		*ret;
-	int			read_ret;
-	int			str;
-	static char	*processer;
-	int i;
+	int		i;
+	char	a;
 
-
-	/* open the file */
-	fd = open("test1.txt", O_RDWR);
-	if (fd == -1)
+	i = 0;
+	a = (char)c;
+	while (*s)
 	{
-		write(1, "File open fail.\n", 16);
-		return (0);
+		if (*s == a)
+			return ((char *)s);
+		s++;
 	}
-	/* save one buffer to a static string */
+	if (*s == a)
+		return ((char *)s);
+	return (0);
+}
+
+/* modified for get_next_line */
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*joint_str;
+	size_t	i;
+	size_t	j;
+
+	if (!s1)
+		return ((char *)s2);
+	if (!s2)
+		return ((char *)s1);
+	i = 0;
+	j = 0;
+	joint_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2))
+			+ 1);
+	if (!joint_str)
+		return (NULL);
+	while (i < ft_strlen(s1) + ft_strlen(s2))
+	{
+		if (i < ft_strlen(s1))
+			joint_str[i] = s1[i];
+		if (i >= ft_strlen(s1))
+			joint_str[i] = s2[j++];
+		i++;
+	}
+	joint_str[i] = '\0';
+	return (joint_str);
+}
+
+int	ft_is_newline(char *processor)
+{
+	int	i;
+
+	i = 0;
+	while (processor[i])
+	{
+		if (processor[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	*ft_trim(char *processer) // strchr --> free --> return strchr
+{
+	char *ret;
+	ret = strchr(processer, '\n');
+	free(processer);
+	return (ret);
+}
+
+char	*ft_out(char *processer) // return the newline and free the newline
+{
+	int i;
+	int j;
+	int len;
+	char *nl;
+
+	i = 0;
+	j = 0;
+	while (processer[i])
+	{
+		if (processer[i] == '\n')
+		{
+			len = i + 1;
+			nl = malloc(sizeof(char) * (len + 1));
+			i = 0;
+			while (i < len)
+			{
+				nl[i] = processer[i];
+				i++;
+			}
+			nl[i] = '\0'; //add a null terminator
+		}
+		i++;
+	}
+	return (nl);
+}
+
+char	*get_next_line(int fd)
+{
+	int			i;
+	char		*buf;
+	char		*out;
+	static char	*processer;
+
+	if (fd == -1)
+		return (NULL);
 	processer = (char *)malloc(sizeof(char) * (BUFFER_SIZE));
 	if (!processer)
 		return (0);
 	i = 0;
-	while (read(fd, buf, BUFFER_SIZE))
+	if (ft_is_newline(processer) == 0) // if processer has no new line
 	{
-		//printf("buf is %s\n", buf);
-		while (i < BUFFER_SIZE)
+		while (read(fd, buf, BUFFER_SIZE) && ft_is_newline(processer) == 0) // as long as there is no new line, read more
 		{
-			processer[i] = buf[i];
-			i++;
+			processer = ft_strjoin(processer, buf); //save to processer. do we need to free buf? typecasting?
 		}
-		processer[i] = '\0';
-
-		//check if there is new line in the processer
-
-		if (ft_strchr(processer, '\n') && *processer)
+		if (ft_is_newline(processer) == 1) // if there is now a new line
 		{
-			//create the line
-			ret = ft_substr(processer, 0, ft_strlen_nl(processer));
-			printf("%s", ret);
-			return(0);
-			//trim it out
-			//else just keep on reading
+			processer = ft_trim(processer);
+			return (ft_out(processer));
 		}
-	printf("%c\n", processer[0]);
-	return (0);
 	}
+	else // if processer already have a new line, skip reading just process
+	{
+		processer = ft_trim(processer);
+		return (ft_out(processer));
+	}
+	if (buf == NULL) // if reaches the end of my file
+		return (NULL);
+	return (NULL);
 }
 
+int	main(void)
+{
+	int	fd;
+	int	i;
 
-
-
-
-	//printf("after %d\n", read_ret);
-	//count = count * bufsize + read_ret ;
-	//file = (char *)malloc(sizeof(char) * (count + 1));
-	//if (!file)
-	//	return (1);
-	//create a string
-	//file[count] = 0;
-	//i = 0;
-	//if (i < count)
-	//{
-	//	read_ret = read(fd, buf, bufsize);
-	//	//printf("%s\n", buf);
-	//	j = 0;
-	//	while (j < bufsize)
-	//	{
-	//		file[i] = buf[j];
-	//		i++;
-	//		j++;
-	//	}
-	//	i += read_ret;
-	//}
-	//i += bufsize;
-	//get next line
-	//close the file
+	i = 0;
+	fd = open("test1.txt", O_RDWR);
+	while (i < 10)
+	{
+		get_next_line(fd);
+		i++;
+	}
+	close(fd);
+	return (0);
+}
