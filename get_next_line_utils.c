@@ -3,32 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/18 21:02:55 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/19 00:44:56 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
 
+size_t	ft_strlen(const char *str)
+{
+	size_t	len;
 
+	len = 0;
+	while (str[len] != '\0')
+		len++;
+	return (len);
+}
 
+size_t	ft_strlen_nl(const char *str) // for a string "abc\ndefg\n\n\n\n123" return 4
+{
+	size_t	len;
 
-//int	main()
-//{
-//	int	is_nl;
-//	char processor[] = "abc\ndefg\n123";
-//	char *ret_trim;
-//	char *ret_out;
+	len = 0;
+	while (str[len] != '\0' && str[len] != '\n')
+		len++;
+	return (len + 1);
+}
 
-//	is_nl = ft_is_newline(processor);
-//	ret_trim = ft_trim(processor);
-//	ret_out = ft_out(processor);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	char	*src_;
 
-//	printf("%d\n", is_nl);
-//	printf("ret is:%s\n", ret_trim);
+	src_ = (char *)src;
+	if (!dstsize)
+		return (ft_strlen((const char *)src_));
+	if (*src_ == '\0')
+		*dst = '\0';
+	while (dstsize > 1 && *src_ != '\0')
+	{
+		*dst = *src_;
+		dst++;
+		src_++;
+		dstsize--;
+	}
+	*dst = '\0';
+	return (ft_strlen((const char *)src));
+}
 
-//	printf("%s\n", ret_out);
-//	printf("%lu\n", ft_strlen_nl(processor));
-//	return (0);
-//}
+/* modified for get_next_line */
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*joint_str;
+	size_t	i;
+	size_t	j;
+
+	if (!s1)
+		return ((char *)s2);
+	if (!s2)
+		return ((char *)s1);
+	i = 0;
+	j = 0;
+	joint_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2))
+			+ 1);
+	if (!joint_str)
+		return (NULL);
+	while (i < ft_strlen(s1) + ft_strlen(s2))
+	{
+		if (i < ft_strlen(s1))
+			joint_str[i] = s1[i];
+		if (i >= ft_strlen(s1))
+			joint_str[i] = s2[j++];
+		i++;
+	}
+	joint_str[i] = '\0';
+	return (joint_str);
+}
+
+int	ft_is_newline(char *processor)
+{
+	int	i;
+
+	i = 0;
+	while (processor[i])
+	{
+		if (processor[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
