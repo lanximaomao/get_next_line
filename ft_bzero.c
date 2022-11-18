@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/18 21:02:55 by lsun             ###   ########.fr       */
+/*   Created: 2022/10/27 11:53:21 by lsun              #+#    #+#             */
+/*   Updated: 2022/11/17 13:04:32 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 
+void	*ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+	char	*new_s;
 
-
-
-//int	main()
-//{
-//	int	is_nl;
-//	char processor[] = "abc\ndefg\n123";
-//	char *ret_trim;
-//	char *ret_out;
-
-//	is_nl = ft_is_newline(processor);
-//	ret_trim = ft_trim(processor);
-//	ret_out = ft_out(processor);
-
-//	printf("%d\n", is_nl);
-//	printf("ret is:%s\n", ret_trim);
-
-//	printf("%s\n", ret_out);
-//	printf("%lu\n", ft_strlen_nl(processor));
-//	return (0);
-//}
+	i = 0;
+	new_s = (char *)s;
+	while (i < n)
+	{
+		new_s[i] = 0;
+		i++;
+	}
+	return (s);
+}

@@ -6,11 +6,26 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/18 19:58:41 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/18 21:19:49 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	*ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+	char	*new_s;
+
+	i = 0;
+	new_s = (char *)s;
+	while (i < n)
+	{
+		new_s[i] = 0;
+		i++;
+	}
+	return (s);
+}
 
 size_t	ft_strlen(const char *str)
 {
@@ -22,22 +37,34 @@ size_t	ft_strlen(const char *str)
 	return (len);
 }
 
-char	*ft_strchr(const char *s, int c)
+size_t	ft_strlen_nl(const char *str) // for a string "abc\ndefg\n\n\n\n123" return 4
 {
-	int		i;
-	char	a;
+	size_t	len;
 
-	i = 0;
-	a = (char)c;
-	while (*s)
+	len = 0;
+	while (str[len] != '\0' && str[len] != '\n')
+		len++;
+	return (len + 1);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	char	*src_;
+
+	src_ = (char *)src;
+	if (!dstsize)
+		return (ft_strlen((const char *)src_));
+	if (*src_ == '\0')
+		*dst = '\0';
+	while (dstsize > 1 && *src_ != '\0')
 	{
-		if (*s == a)
-			return ((char *)s);
-		s++;
+		*dst = *src_;
+		dst++;
+		src_++;
+		dstsize--;
 	}
-	if (*s == a)
-		return ((char *)s);
-	return (0);
+	*dst = '\0';
+	return (ft_strlen((const char *)src));
 }
 
 /* modified for get_next_line */
@@ -83,10 +110,15 @@ int	ft_is_newline(char *processor)
 	return (0);
 }
 
-char	*ft_trim(char *processer) // strchr --> free --> return strchr
+char	*ft_trim(char *processer) // can not test here because the processer is defined as in stack not dynamically allocated by malloc
 {
 	char *ret;
-	ret = strchr(processer, '\n');
+	int	len;
+	len = ft_strlen_nl(processer);
+	ret = (char*)malloc(sizeof(char)*(len + 1));
+	if(!ret)
+		return (NULL);
+	ft_strlcpy(ret, processer, len + 1);
 	free(processer);
 	return (ret);
 }
@@ -113,6 +145,7 @@ char	*ft_out(char *processer) // return the newline and free the newline
 				i++;
 			}
 			nl[i] = '\0'; //add a null terminator
+			break;
 		}
 		i++;
 	}
@@ -128,15 +161,20 @@ char	*get_next_line(int fd)
 
 	if (fd == -1)
 		return (NULL);
-	processer = (char *)malloc(sizeof(char) * (BUFFER_SIZE));
+	processer = (char *)malloc(sizeof(char) * (BUFFER_SIZE) + 1);
 	if (!processer)
 		return (0);
 	i = 0;
+	read(fd, buf, BUFFER_SIZE);
+	printf("%s\n", buf); // fix this!!
+	ft_bzero(processer, BUFFER_SIZE + 1);
 	if (ft_is_newline(processer) == 0) // if processer has no new line
 	{
 		while (read(fd, buf, BUFFER_SIZE) && ft_is_newline(processer) == 0) // as long as there is no new line, read more
 		{
+			//write(1, "here1\n", 6);
 			processer = ft_strjoin(processer, buf); //save to processer. do we need to free buf? typecasting?
+			printf("%s\n", processer);
 		}
 		if (ft_is_newline(processer) == 1) // if there is now a new line
 		{
@@ -161,7 +199,7 @@ int	main(void)
 
 	i = 0;
 	fd = open("test1.txt", O_RDWR);
-	while (i < 10)
+	while (i < 1)
 	{
 		get_next_line(fd);
 		i++;
