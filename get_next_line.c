@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/18 21:19:49 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/19 00:37:11 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,26 +155,26 @@ char	*ft_out(char *processer) // return the newline and free the newline
 char	*get_next_line(int fd)
 {
 	int			i;
+	int ret;
 	char		*buf;
 	char		*out;
 	static char	*processer;
 
 	if (fd == -1)
 		return (NULL);
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE) + 1);
 	processer = (char *)malloc(sizeof(char) * (BUFFER_SIZE) + 1);
-	if (!processer)
+	if (!processer || !buf)
 		return (0);
 	i = 0;
-	read(fd, buf, BUFFER_SIZE);
-	printf("%s\n", buf); // fix this!!
-	ft_bzero(processer, BUFFER_SIZE + 1);
+	// ft_bzero(processer, BUFFER_SIZE + 1);
 	if (ft_is_newline(processer) == 0) // if processer has no new line
 	{
 		while (read(fd, buf, BUFFER_SIZE) && ft_is_newline(processer) == 0) // as long as there is no new line, read more
 		{
 			//write(1, "here1\n", 6);
 			processer = ft_strjoin(processer, buf); //save to processer. do we need to free buf? typecasting?
-			printf("%s\n", processer);
+			//printf("%s\n", processer);
 		}
 		if (ft_is_newline(processer) == 1) // if there is now a new line
 		{
@@ -198,12 +198,15 @@ int	main(void)
 	int	i;
 
 	i = 0;
-	fd = open("test1.txt", O_RDWR);
-	while (i < 1)
+	fd = open("tests.txt", O_RDWR);
+	while (i < 5)
 	{
-		get_next_line(fd);
+		printf("%s\n", get_next_line(fd));
 		i++;
 	}
 	close(fd);
 	return (0);
+	//printf("%s\n", buf);
+	//printf("%d\n", ret);
+	//printf("%d\n", fd);
 }
