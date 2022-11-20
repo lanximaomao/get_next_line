@@ -6,7 +6,7 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:36:28 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/20 18:57:59 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/20 23:22:37 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 2
+#  define BUFFER_SIZE 7
 # endif
 
 // remove before submission
