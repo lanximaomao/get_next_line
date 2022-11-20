@@ -6,7 +6,7 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/19 00:44:56 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/20 18:57:29 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ size_t	ft_strlen_nl(const char *str) // for a string "abc\ndefg\n\n\n\n123" retu
 	len = 0;
 	while (str[len] != '\0' && str[len] != '\n')
 		len++;
-	return (len + 1);
+	if (str[len] == '\n')
+		return(len + 1);
+	return (0);
 }
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
@@ -93,4 +95,37 @@ int	ft_is_newline(char *processor)
 		i++;
 	}
 	return (0);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int		i;
+	char	a;
+
+	i = 0;
+	a = (char)c;
+	while (*s)
+	{
+		if (*s == a)
+			return ((char *)s);
+		s++;
+	}
+	if (*s == a)
+		return ((char *)s);
+	return (0);
+}
+
+void	*ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+	char	*new_s;
+
+	i = 0;
+	new_s = (char *)s;
+	while (i < n)
+	{
+		new_s[i] = 0;
+		i++;
+	}
+	return (s);
 }

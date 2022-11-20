@@ -6,7 +6,7 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:36:28 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/19 00:48:00 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/20 18:57:59 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 2
 # endif
 
-// remove before submissin
+// remove before submission
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -33,5 +33,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_is_newline(char *processor);
 char	*ft_trim(char *processer);
 char	*ft_out(char *processer);
+char	*ft_strchr(const char *s, int c);
+void	*ft_bzero(void *s, size_t n);
 
 #endif

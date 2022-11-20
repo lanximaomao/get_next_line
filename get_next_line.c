@@ -6,7 +6,7 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/20 14:39:48 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/20 21:39:35 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	*ft_trim(char *processer)
 	int	len;
 
 	len = ft_strlen_nl(processer);
-	printf("len is %d\n", len);
 	if (len != 0)
 	{
 		ret = (char*)malloc(sizeof(char)*(len + 1));
@@ -31,7 +30,10 @@ char	*ft_trim(char *processer)
 		free(processer);
 	}
 	else // reaching the end of the file, no need to trim, just free
-		free(processer);
+		{
+			free(processer);
+			ret = NULL;
+		}
 	return (ret);
 }
 
@@ -46,7 +48,7 @@ char	*ft_out(char *processer) // return the newline and free the newline
 	j = 0;
 	while (processer[i])
 	{
-		if (processer[i] == '\n')
+		if (processer[i] == '\n' || processer[i + 1] == '\0')
 		{
 			len = i + 1;
 			nl = malloc(sizeof(char) * (len + 1));
@@ -74,31 +76,43 @@ char	*get_next_line(int fd)
 	if (fd == -1)
 		return (NULL);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE) + 1);
-	processer = (char *)malloc(sizeof(char) * (BUFFER_SIZE) + 1);
+	if (!processer)
+		processer = (char *)malloc(sizeof(char) * (BUFFER_SIZE) + 1);
 	if (!processer || !buf)
 		return (0);
 	i = 0;
+	//printf("start processor %s\n", processer);
+	//ft_bzero(buf, BUFFER_SIZE);
 	if (ft_is_newline(processer) == 0) // if processer has no new line
 	{
 		while (read(fd, buf, BUFFER_SIZE) && ft_is_newline(processer) == 0) // as long as there is no new line, read more
 		{
-			processer = ft_strjoin(processer, buf); //save to processer. do we need to free buf? typecasting?
+			//printf("buf is %s\n", buf);
+			processer = ft_strjoin((const char *)processer, (const char*)buf); //save to processer. do we need to free buf? typecasting?
+			//printf("processer is %s\n", processer);
+
+
+			if (ft_is_newline(processer) == 1) // if after join, there is now a new line
+			{
+				ret = ft_out(processer);
+				//printf("before trim: %s\n", processer);
+				processer = ft_trim(processer);
+				//printf("after trim: %s\n", processer);
+				free(buf);
+				return(ret);
+			}
 		}
-		if (ft_is_newline(processer) == 1) // if there is now a new line
-		{
-			ret = ft_out(processer);
-			printf("before trim: %s\n", processer);
-			processer = ft_trim(processer);
-			printf("after trim: %s\n", processer);
-		}
+
 	}
 	else // if processer already have a new line, skip reading just process
 	{
 		processer = ft_trim(processer);
 		return (ft_out(processer));
+		//write(1, "here\n", 5);
 	}
-	if (buf == NULL) // if reaches the end of my file
-		return (NULL);
+	//if (buf == NULL) // if reaches the end of my file
+	//	return (NULL);
+	free(buf);
 	return (NULL);
 }
 
@@ -108,10 +122,10 @@ int	main(void)
 	int	i;
 
 	i = 0;
-	fd = open("test1.txt", O_RDWR);
+	fd = open("tests.txt", O_RDWR);
 	while (i < 5)
 	{
-		printf("%s\n", get_next_line(fd));
+		printf("my next line is %s\n", get_next_line(fd));
 		i++;
 	}
 	close(fd);
