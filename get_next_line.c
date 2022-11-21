@@ -6,7 +6,7 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/21 15:56:12 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/21 17:10:46 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char	*ft_trim(char *processer)
 			free(processer);
 			return (NULL);
 		}
+	//printf("after trim mine is %s\n", ret);
 	return (ret);
 }
 
@@ -78,29 +79,29 @@ char	*get_next_line(int fd)
 
 	if (fd <= 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0 )
 		return (NULL);
-	read_bytes = 1;
-	//buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE) + 1);
+	//write(1, "here\n", 5);
 	if (!processer)
 		{
 			processer = (char *)malloc(sizeof(char) * 1);
 			processer[0] = '\0';
 		}
-	if (!processer) // remove malloc protection for buff
+	if (!processer)
+	{
 		return (0);
+	}
 	i = 0;
+	read_bytes = 1;
 	//write(1, "here\n", 5);
 	//printf("start processor %s\n", processer);
-	//ft_bzero(buf, BUFFER_SIZE + 1);
 	if (ft_is_newline(processer) == 0) // if processer has no new line
 	{
 		while (read_bytes && ft_is_newline(processer) == 0) // as long as there is no new line, read more
 		{
-			//printf("%lu\n", ft_strlen(buf));
 			read_bytes = read(fd, buf, BUFFER_SIZE);
 			buf[read_bytes] = '\0';
 			//printf("buf is %s\n", buf);
-			processer = ft_strjoin(processer, buf); //save to processer. do we need to free buf? typecasting?
-			printf("processer is %s\n\n\n", processer);
+			processer = ft_strjoin(processer, buf);
+			//printf("processer is %s\n", processer);
 
 
 			if (ft_is_newline(processer) == 1) // if after join, there is now a new line
@@ -143,22 +144,22 @@ char	*get_next_line(int fd)
 }
 
 
-int	main(void)
-{
-	int	fd;
-	int	i;
-	char *str;
+//int	main(void)
+//{
+//	int	fd;
+//	int	i;
+//	char *str;
 
-	i = 0;
-	fd = open("big_line_no_nl", O_RDWR);
-	//printf("%d\n", fd);
-	while (i < 10)
-	{
-		str = get_next_line(fd);
-		printf("my next line is %s\n", str);
-		free(str);
-		i++;
-	}
-	close(fd);
-	return (0);
-}
+//	i = 0;
+//	fd = open("alternate_line_nl_no_nl", O_RDWR);
+//	//printf("%d\n", fd);
+//	while (i < 10)
+//	{
+//		str = get_next_line(fd);
+//		printf("my next line is %s\n", str);
+//		free(str);
+//		i++;
+//	}
+//	close(fd);
+//	return (0);
+//}

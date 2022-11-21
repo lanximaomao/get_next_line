@@ -6,7 +6,7 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:36:28 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/21 14:47:26 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/21 17:01:46 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 70
 # endif
 
 // remove before submission
