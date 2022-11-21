@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/20 23:22:12 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/21 11:09:36 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,15 @@ char	*get_next_line(int fd)
 	if (!processer || !buf)
 		return (0);
 	i = 0;
-	write(1, "here\n", 5);
+	//write(1, "here\n", 5);
 	printf("start processor %s\n", processer);
-	//ft_bzero(buf, BUFFER_SIZE);
+	ft_bzero(buf, BUFFER_SIZE + 1);
 	if (ft_is_newline(processer) == 0) // if processer has no new line
 	{
 		while (read(fd, buf, BUFFER_SIZE) && ft_is_newline(processer) == 0) // as long as there is no new line, read more
 		{
+			//printf("%lu\n", ft_strlen(buf));
+			buf[ft_strlen(buf)] = '\0';
 			printf("buf is %s\n", buf);
 			processer = ft_strjoin((const char *)processer, (const char*)buf); //save to processer. do we need to free buf? typecasting?
 			printf("processer is %s\n", processer);
@@ -95,22 +97,27 @@ char	*get_next_line(int fd)
 
 			if (ft_is_newline(processer) == 1) // if after join, there is now a new line
 			{
+				//write(1, "here\n", 5);
 				ret = ft_out(processer);
 				processer = ft_trim(processer);
 				free(buf);
 				return(ret);
 			}
 		}
+
+		//printf("my buf is %s\n", buf);
 		if (ft_is_newline(processer) == 0) // what if after all the possible joins, still no new line?
 		{
+			//write(1, "there\n", 6);
+			ret = ft_out(processer);
+			processer = ft_trim(processer);
 			free(buf);
-			return(processer);
+			return(ret);
 		}
-		free(buf);
+		//free(buf);
 	}
 	else // if processer already have a new line, skip reading just process
 	{
-		//write(1, "there\n", 6);
 		ret = ft_out(processer);
 		//printf("before trim: %s\n", processer);
 		processer = ft_trim(processer);
@@ -131,9 +138,9 @@ int	main(void)
 	int	i;
 
 	i = 0;
-	fd = open("test2.txt", O_RDWR);
+	fd = open("41_with_nl", O_RDWR);
 	//printf("%d\n", fd);
-	while (i < 3)
+	while (i < 10)
 	{
 		printf("my next line is %s\n", get_next_line(fd));
 		i++;
