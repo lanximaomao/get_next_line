@@ -6,12 +6,11 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/21 14:48:43 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/21 15:56:12 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 char	*ft_trim(char *processer)
 {
@@ -101,7 +100,7 @@ char	*get_next_line(int fd)
 			buf[read_bytes] = '\0';
 			//printf("buf is %s\n", buf);
 			processer = ft_strjoin(processer, buf); //save to processer. do we need to free buf? typecasting?
-			//printf("processer is %s\n", processer);
+			printf("processer is %s\n\n\n", processer);
 
 
 			if (ft_is_newline(processer) == 1) // if after join, there is now a new line
@@ -112,6 +111,8 @@ char	*get_next_line(int fd)
 				//free(buf);
 				return(ret);
 			}
+			//if (ft_is_newline(processer) == 0)
+			//	break;
 		}
 
 		//printf("my buf is %s\n", buf);
@@ -142,22 +143,22 @@ char	*get_next_line(int fd)
 }
 
 
-//int	main(void)
-//{
-//	int	fd;
-//	int	i;
-//	char *str;
+int	main(void)
+{
+	int	fd;
+	int	i;
+	char *str;
 
-//	i = 0;
-//	fd = open("42_with_nl", O_RDWR);
-//	//printf("%d\n", fd);
-//	while (i < 10)
-//	{
-//		str = get_next_line(fd);
-//		printf("my next line is %s\n", str);
-//		free(str);
-//		i++;
-//	}
-//	close(fd);
-//	return (0);
-//}
+	i = 0;
+	fd = open("big_line_no_nl", O_RDWR);
+	//printf("%d\n", fd);
+	while (i < 10)
+	{
+		str = get_next_line(fd);
+		printf("my next line is %s\n", str);
+		free(str);
+		i++;
+	}
+	close(fd);
+	return (0);
+}
