@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 15:45:21 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/22 19:13:46 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_is_newline(char *processor)
+int	ft_is_newline(char *buf)
 {
 	int	i;
 
 	i = 0;
-	while (processor[i])
+	while (buf[i])
 	{
-		if (processor[i] == '\n')
+		if (buf[i] == '\n')
 			return (1);
 		i++;
 	}
@@ -105,13 +105,11 @@ char	*get_next_line(int fd)
 	read_bytes = 1;
 	if (ft_is_newline(stash) == 0)
 	{
-		while (read_bytes != 0 && ft_is_newline(stash) == 0)
+		while (read_bytes != 0 && ft_is_newline(buf) == 0)
 		{
 			read_bytes = read(fd, buf, BUFFER_SIZE);
 			buf[read_bytes] = '\0';
 			stash = ft_strjoin(stash, buf);
-			if (ft_is_newline(stash) == 1)
-				break ;
 		}
 	}
 	ret = ft_out(stash);
@@ -119,21 +117,23 @@ char	*get_next_line(int fd)
 	return (ret);
 }
 
-//int	main(void)
-//{
-//	int	fd;
-//	int	i;
-//	char *str;
+/*
+int	main(void)
+{
+	int		i;
+	int		fd;
+	char	*str;
 
-//	i = 0;
-//	fd = open("multiple_line_no_nl", O_RDWR);
-//	while (i < 10)
-//	{
-//		str = get_next_line(fd);
-//		printf("my next line is %s\n", str);
-//		free(str);
-//		i++;
-//	}
-//	close(fd);
-//	return (0);
-//}
+	i = 0;
+	fd = open("big_line_no_nl", O_RDWR);
+	while (i < 10)
+	{
+		str = get_next_line(fd);
+		printf("my next line is %s\n", str);
+		free(str);
+		i++;
+	}
+	close(fd);
+	return (0);
+}
+*/

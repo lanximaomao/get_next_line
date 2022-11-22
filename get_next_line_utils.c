@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 14:51:10 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/22 19:11:03 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,21 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	if (!s1)
-		return ((char *)s2);
-	if (!s2)
-		return ((char *)s1);
-	i = 0;
-	j = 0;
+	if (!s1 || !s2)
+		return (ft_strdup(s1));
 	joint_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2))
 			+ 1);
 	if (!joint_str)
 		return (NULL);
-	while (i < ft_strlen(s1) + ft_strlen(s2))
+	i = 0;
+	while (s1[i] != '\0')
 	{
-		if (i < ft_strlen(s1))
-			joint_str[i] = s1[i];
-		if (i >= ft_strlen(s1))
-			joint_str[i] = s2[j++];
+		joint_str[i] = s1[i];
 		i++;
 	}
+	j = 0;
+	while (s2[j] != '\0')
+		joint_str[i++] = s2[j++];
 	joint_str[i] = '\0';
 	free(s1);
 	return (joint_str);
