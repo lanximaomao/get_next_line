@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 15:04:29 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/22 15:03:08 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ char	*get_next_line(int fd)
 {
 	char		buf[BUFFER_SIZE + 1];
 	char		*ret;
-	static char	*stash;
+	static char	*stash[4096]; // add a 4096
 	int			read_bytes;
 
-	stash = ft_fd_check(fd, stash);
+	*stash = ft_fd_check(fd, stash); // add a star
 	if (stash == NULL)
 		return (NULL);
 	read_bytes = 1;
@@ -109,13 +109,13 @@ char	*get_next_line(int fd)
 		{
 			read_bytes = read(fd, buf, BUFFER_SIZE);
 			buf[read_bytes] = '\0';
-			stash = ft_strjoin(stash, buf);
+			*stash = ft_strjoin(stash, buf); // add a star
 			if (ft_is_newline(stash) == 1)
 				break ;
 		}
 	}
 	ret = ft_out(stash);
-	stash = ft_trim(stash);
+	*stash = ft_trim(stash); // add a star
 	return (ret);
 }
 
