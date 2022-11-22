@@ -6,61 +6,60 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/21 17:10:46 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/22 14:20:11 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_trim(char *processer)
-{
-	char *ret;
-	char *temp;
-	int	len;
+/* am I freeing something that doesn't exist?*/
+/* after free, reset to null */
 
-	len = ft_strlen_nl(processer);
-	//printf("len to newline is %d\n", len);
+char	*ft_trim(char *stash)
+{
+	char	*ret;
+	char	*temp;
+	int		len;
+
+	len = ft_strlen_nl(stash);
 	if (len != 0)
 	{
-		ret = (char*)malloc(sizeof(char)*(len + 1));
-		if(!ret)
-			return (NULL);
-		temp = ft_strchr(processer, '\n') + 1  ; // + 1 to not include the new line
-		ft_strlcpy(ret, temp, ft_strlen(temp) + 1);
-		free(processer);
+		temp = ft_strchr(stash, '\n') + 1;
+		ret = ft_strdup(temp);
+		free(stash);
+		stash = NULL;
 	}
-	else // reaching the end of the file, no need to trim, just free
-		{
-			free(processer);
-			return (NULL);
-		}
-	//printf("after trim mine is %s\n", ret);
+	else
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
 	return (ret);
 }
 
-char	*ft_out(char *processer) // return the newline and free the newline
+char	*ft_out(char *stash)
 {
-	int i;
-	int j;
-	int len;
-	char *nl;
+	int		i;
+	int		j;
+	int		len;
+	char	*nl;
 
 	i = 0;
 	j = 0;
-	while (processer[i])
+	while (stash[i])
 	{
-		if (processer[i] == '\n' || processer[i + 1] == '\0')
+		if (stash[i] == '\n' || stash[i + 1] == '\0')
 		{
 			len = i + 1;
-			//printf("out len is %d\n", len);
 			nl = malloc(sizeof(char) * (len + 1));
 			i = 0;
 			while (i < len)
 			{
-				nl[i] = processer[i];
+				nl[i] = stash[i];
 				i++;
 			}
-			nl[i] = '\0'; //add a null terminator
+			nl[i] = '\0';
 			return (nl);
 		}
 		i++;
@@ -68,81 +67,46 @@ char	*ft_out(char *processer) // return the newline and free the newline
 	return (NULL);
 }
 
+char	*ft_fd_check(int fd, char *stash)
+{
+	if (fd <= 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
+	if (!stash)
+	{
+		stash = (char *)malloc(sizeof(char) * 1);
+		stash[0] = '\0';
+	}
+	if (!stash)
+		return (NULL);
+	return (stash);
+}
+
 char	*get_next_line(int fd)
 {
-	int			i;
-	//char		*buf;
-	char	buf[BUFFER_SIZE + 1];
-	char *ret;
-	static char	*processer;
-	int read_bytes;
+	char		buf[BUFFER_SIZE + 1];
+	char		*ret;
+	static char	*stash;
+	int			read_bytes;
 
-	if (fd <= 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0 )
+	stash = ft_fd_check(fd, stash);
+	if (stash == NULL)
 		return (NULL);
-	//write(1, "here\n", 5);
-	if (!processer)
-		{
-			processer = (char *)malloc(sizeof(char) * 1);
-			processer[0] = '\0';
-		}
-	if (!processer)
-	{
-		return (0);
-	}
-	i = 0;
 	read_bytes = 1;
-	//write(1, "here\n", 5);
-	//printf("start processor %s\n", processer);
-	if (ft_is_newline(processer) == 0) // if processer has no new line
+	if (ft_is_newline(stash) == 0)
 	{
-		while (read_bytes && ft_is_newline(processer) == 0) // as long as there is no new line, read more
+		while (read_bytes != 0 && ft_is_newline(stash) == 0)
 		{
 			read_bytes = read(fd, buf, BUFFER_SIZE);
 			buf[read_bytes] = '\0';
-			//printf("buf is %s\n", buf);
-			processer = ft_strjoin(processer, buf);
-			//printf("processer is %s\n", processer);
-
-
-			if (ft_is_newline(processer) == 1) // if after join, there is now a new line
-			{
-				//write(1, "here\n", 5);
-				ret = ft_out(processer);
-				processer = ft_trim(processer);
-				//free(buf);
-				return(ret);
-			}
-			//if (ft_is_newline(processer) == 0)
-			//	break;
+			stash = ft_strjoin(stash, buf);
+			if (ft_is_newline(stash) == 1)
+				break ;
 		}
-
-		//printf("my buf is %s\n", buf);
-		if (ft_is_newline(processer) == 0) // what if after all the possible joins, still no new line?
-		{
-			//write(1, "there\n", 6);
-			ret = ft_out(processer);
-			processer = ft_trim(processer);
-			//printf("after trim processer is %s\n", processer);
-			//free(buf);
-			return(ret);
-		}
-		//free(buf);
 	}
-	else // if processer already have a new line, skip reading just process
-	{
-		ret = ft_out(processer);
-		//printf("before trim: %s\n", processer);
-		processer = ft_trim(processer);
-		//printf("after trim: %s\n", processer);
-		//free(buf);
-		return (ret);
-		//write(1, "here\n", 5);
-	}
-	//if (buf == NULL) // if reaches the end of my file
-	//	return (NULL);
-	return (NULL);
+	ret = ft_out(stash);
+	stash = ft_trim(stash);
+	return (ret);
 }
-
 
 //int	main(void)
 //{
@@ -151,8 +115,7 @@ char	*get_next_line(int fd)
 //	char *str;
 
 //	i = 0;
-//	fd = open("alternate_line_nl_no_nl", O_RDWR);
-//	//printf("%d\n", fd);
+//	fd = open("multiple_line_no_nl", O_RDWR);
 //	while (i < 10)
 //	{
 //		str = get_next_line(fd);
