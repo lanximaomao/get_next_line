@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 19:13:46 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/22 19:40:49 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,24 +96,24 @@ char	*get_next_line(int fd)
 {
 	char		buf[BUFFER_SIZE + 1];
 	char		*ret;
-	static char	*stash;
+	static char	*stash[4096];
 	int			read_bytes;
 
-	stash = ft_fd_check(fd, stash);
-	if (stash == NULL)
+	stash[fd] = ft_fd_check(fd, stash[fd]);
+	if (stash[fd] == NULL)
 		return (NULL);
 	read_bytes = 1;
-	if (ft_is_newline(stash) == 0)
+	if (ft_is_newline(stash[fd]) == 0)
 	{
 		while (read_bytes != 0 && ft_is_newline(buf) == 0)
 		{
 			read_bytes = read(fd, buf, BUFFER_SIZE);
 			buf[read_bytes] = '\0';
-			stash = ft_strjoin(stash, buf);
+			stash[fd] = ft_strjoin(stash[fd], buf);
 		}
 	}
-	ret = ft_out(stash);
-	stash = ft_trim(stash);
+	ret = ft_out(stash[fd]);
+	stash[fd] = ft_trim(stash[fd]);
 	return (ret);
 }
 
