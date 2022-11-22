@@ -6,7 +6,7 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:36:28 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 18:33:10 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/22 20:42:02 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,9 @@
 # include <unistd.h>
 
 char	*get_next_line(int fd);
-char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *str);
 size_t	ft_strlen_nl(const char *str);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-char	*ft_strjoin(char *s1, char *s2);
-int		ft_is_newline(char *processor);
-char	*ft_trim(char *processer);
-char	*ft_out(char *processer);
+char	*ft_strjoin_gnl(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
-void	*ft_bzero(void *s, size_t n);
 char	*ft_strdup(const char *src);
 #endif
