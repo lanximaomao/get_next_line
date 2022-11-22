@@ -6,7 +6,7 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 19:19:16 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/22 19:13:46 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,3 +116,24 @@ char	*get_next_line(int fd)
 	stash = ft_trim(stash);
 	return (ret);
 }
+
+/*
+int	main(void)
+{
+	int		i;
+	int		fd;
+	char	*str;
+
+	i = 0;
+	fd = open("big_line_no_nl", O_RDWR);
+	while (i < 10)
+	{
+		str = get_next_line(fd);
+		printf("my next line is %s\n", str);
+		free(str);
+		i++;
+	}
+	close(fd);
+	return (0);
+}
+*/
