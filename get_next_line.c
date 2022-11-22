@@ -6,7 +6,7 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 14:20:11 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/22 14:50:07 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 
 /* am I freeing something that doesn't exist?*/
 /* after free, reset to null */
+
+int	ft_is_newline(char *processor)
+{
+	int	i;
+
+	i = 0;
+	while (processor[i])
+	{
+		if (processor[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 char	*ft_trim(char *stash)
 {
