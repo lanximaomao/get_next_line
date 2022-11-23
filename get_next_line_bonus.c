@@ -6,26 +6,12 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 20:37:03 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/23 20:41:46 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-
-static int	ft_is_newline(char *buf)
-{
-	int	i;
-
-	i = 0;
-	while (buf[i])
-	{
-		if (buf[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
+//update
 static char	*ft_trim(char *stash)
 {
 	char	*ret;
@@ -37,18 +23,15 @@ static char	*ft_trim(char *stash)
 	{
 		temp = ft_strchr(stash, '\n') + 1;
 		ret = ft_strdup(temp);
-		free(stash);
-		stash = NULL;
 	}
 	else
-	{
-		free(stash);
-		stash = NULL;
-		return (NULL);
-	}
+		ret = NULL;
+	free(stash);
+	stash = NULL;
 	return (ret);
 }
 
+//update
 static char	*ft_out(char *stash)
 {
 	int		i;
@@ -63,7 +46,9 @@ static char	*ft_out(char *stash)
 		if (stash[i] == '\n' || stash[i + 1] == '\0')
 		{
 			len = i + 1;
-			nl = malloc(sizeof(char) * (len + 1));
+			nl = ft_calloc((len + 1), sizeof(char));
+			if (!nl)
+				return (NULL);
 			i = 0;
 			while (i < len)
 			{
@@ -84,34 +69,39 @@ static char	*ft_fd_check(int fd, char *stash)
 		return (NULL);
 	if (!stash)
 	{
-		stash = (char *)malloc(sizeof(char) * 1);
+		stash = (char *)ft_calloc(1,1);
+		if (!stash)
+			return (NULL);
 		stash[0] = '\0';
 	}
-	if (!stash)
-		return (NULL);
 	return (stash);
 }
 
 char	*get_next_line(int fd)
 {
-	char		buf[BUFFER_SIZE + 1];
+	//char		buf[BUFFER_SIZE + 1];
+	char		*buf;
 	char		*ret;
-	static char	*stash[4096];
+	static char	*stash[1024];
 	int			read_bytes;
 
 	stash[fd] = ft_fd_check(fd, stash[fd]);
 	if (stash[fd] == NULL)
 		return (NULL);
 	read_bytes = 1;
-	if (ft_is_newline(stash[fd]) == 0)
+	buf = ft_calloc(BUFFER_SIZE + 1, 1);
+	if (!buf)
+		return (NULL);
+	if (ft_strchr(stash[fd], '\n') == 0)
 	{
-		while (read_bytes != 0 && ft_is_newline(buf) == 0)
+		while (read_bytes != 0 && ft_strchr(buf, '\n') == 0)
 		{
 			read_bytes = read(fd, buf, BUFFER_SIZE);
 			buf[read_bytes] = '\0';
 			stash[fd] = ft_strjoin_gnl(stash[fd], buf);
 		}
 	}
+	free(buf);
 	ret = ft_out(stash[fd]);
 	stash[fd] = ft_trim(stash[fd]);
 	return (ret);

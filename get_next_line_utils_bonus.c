@@ -6,7 +6,7 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/22 20:37:43 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/23 20:42:53 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,31 @@ char	*ft_strdup(const char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
+}
+
+
+void	*ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+	char	*new_s;
+
+	i = 0;
+	new_s = (char *)s;
+	while (i < n)
+	{
+		new_s[i] = 0;
+		i++;
+	}
+	return (s);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*start;
+
+	start = (void *)malloc(size * count);
+	if (!start)
+		return (0);
+	ft_bzero(start, size * count);
+	return (start);
 }
