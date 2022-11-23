@@ -6,7 +6,7 @@
 /*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/23 20:37:54 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/23 20:53:45 by linlinsun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,19 +108,33 @@ char	*get_next_line(int fd)
 	return (ret);
 }
 
-//int main()
-//{
-//	int fd;
-//	char *line;
+int main()
+{
+	int fd;
+	char *line;
 
-//	fd = open("41_no_nl", O_RDONLY);
-//	if (fd == -1)
-//		return (0);
-//	line = get_next_line(fd);
-//	printf("%s", line);
+	fd = open("nl", O_RDONLY);
+	if (fd == -1)
+		return (0);
+	line = get_next_line(fd);
+	printf("1st %s", line);
+	line = get_next_line(fd);
+	printf("2nd %s", line);
+	line = get_next_line(fd);
+	printf("3rd %s", line);
+	line = get_next_line(fd);
+	printf("4th %s", line);
+	line = get_next_line(fd);
+	printf("5th %s", line);
+	line = get_next_line(fd);
+	printf("6th %s", line);
+	line = get_next_line(fd);
+	printf("7th %s", line);
+	line = get_next_line(fd);
+	printf("8th %s", line);
 
-//	//while ((line = get_next_line(fd)) != NULL)
-//	//	printf("%s", line);
+	//while ((line = get_next_line(fd)) != NULL)
+	//	printf("%s", line);
 
-//	return (0);
-//}
+	return (0);
+}
