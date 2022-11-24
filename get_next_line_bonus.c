@@ -6,11 +6,11 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 16:13:19 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 19:24:44 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 char	*ft_strjoin_gnl(char *s1, char *s2)
 {
@@ -18,8 +18,8 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	if (!s1 || !s2)
-		return (ft_strdup(s1));
+	if (!s1 && !s2)
+		return (NULL);
 	joint_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2))
 			+ 1);
 	if (!joint_str)
@@ -84,44 +84,63 @@ static char	*ft_out(char *stash)
 	return (NULL);
 }
 
-static char	*ft_fd_check(int fd, char *stash)
+//static char	*ft_fd_check(int fd, char *stash)
+//{
+//	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+//		return (NULL);
+//	if (!stash)
+//	{
+//		stash = (char *)ft_calloc(1, 1);
+//		if (!stash)
+//			return (NULL);
+//		stash[0] = '\0';
+//	}
+//	return (stash);
+//}
+
+char	*ft_read(int fd, char *stash)
 {
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	char	*buf;
+	int		read_bytes;
+
+	read_bytes = 1;
+	buf = ft_calloc(BUFFER_SIZE + 1, 1);
+	if (!buf)
 		return (NULL);
-	if (!stash)
+	while (read_bytes != 0 && ft_strchr(stash, '\n') == 0)
 	{
-		stash = (char *)ft_calloc(1, 1);
+		read_bytes = read(fd, buf, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			free(buf);
+			return (NULL);
+		}
+		buf[read_bytes] = '\0';
+		stash = ft_strjoin_gnl(stash, buf);
 		if (!stash)
 			return (NULL);
-		stash[0] = '\0';
 	}
+	free(buf);
 	return (stash);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*buf;
 	char		*ret;
 	static char	*stash[1024];
-	int			read_bytes;
 
-	stash[fd] = ft_fd_check(fd, stash[fd]);
-	if (stash[fd] == NULL)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	read_bytes = 1;
-	buf = ft_calloc(BUFFER_SIZE + 1, 1);
-	if (!buf)
-		return (NULL);
-	if (ft_strchr(stash[fd], '\n') == 0)
+	if (!stash[fd])
 	{
-		while (read_bytes != 0 && ft_strchr(buf, '\n') == 0)
-		{
-			read_bytes = read(fd, buf, BUFFER_SIZE);
-			buf[read_bytes] = '\0';
-			stash[fd] = ft_strjoin_gnl(stash[fd], buf);
-		}
+		stash[fd] = (char *)ft_calloc(1, 1);
+		if (!stash[fd])
+			return (NULL);
+		stash[fd][0] = '\0';
 	}
-	free(buf);
+	stash[fd] = ft_read(fd, stash[fd]);
+	if (!stash[fd])
+		return (NULL);
 	ret = ft_out(stash[fd]);
 	stash[fd] = ft_trim(stash[fd]);
 	return (ret);

@@ -6,11 +6,11 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 16:51:46 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 19:23:13 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 size_t	ft_strlen(const char *str)
 {
@@ -41,6 +41,8 @@ char	*ft_strchr(const char *s, int c)
 
 	i = 0;
 	a = (char)c;
+	if (!s)
+		return (0);
 	while (*s)
 	{
 		if (*s == a)
@@ -62,7 +64,7 @@ char	*ft_strdup(const char *src)
 	len = ft_strlen((char *)src);
 	if (!src && !*src)
 		return (NULL);
-	dest = (char *)malloc(sizeof(*src) * (len + 1));
+	dest = (char *)ft_calloc((len + 1), sizeof(*src));
 	if (!dest)
 		return (NULL);
 	while (src[i] != '\0')
