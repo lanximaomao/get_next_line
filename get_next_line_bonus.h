@@ -6,7 +6,7 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:36:28 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 16:01:14 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 16:51:31 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-void	*ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 
 char	*get_next_line(int fd);

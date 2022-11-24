@@ -6,7 +6,7 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 16:14:13 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 17:02:50 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,14 @@ char	*get_next_line(int fd)
 		while (read_bytes != 0 && ft_strchr(buf, '\n') == 0)
 		{
 			read_bytes = read(fd, buf, BUFFER_SIZE);
+			//
 			buf[read_bytes] = '\0';
 			stash = ft_strjoin_gnl(stash, buf);
 		}
 	}
 	free(buf);
 	ret = ft_out(stash);
+	//if stash is null
 	stash = ft_trim(stash);
 	return (ret);
 }

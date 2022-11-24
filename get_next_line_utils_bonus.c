@@ -6,7 +6,7 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 16:09:35 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 16:51:46 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,32 +74,23 @@ char	*ft_strdup(const char *src)
 	return (dest);
 }
 
-void	*ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-	char	*new_s;
-
-	i = 0;
-	new_s = (char *)s;
-	while (i < n)
-	{
-		new_s[i] = 0;
-		i++;
-	}
-	return (s);
-}
-
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*start;
+	size_t	i;
+	char	*start;
 
+	i = 0;
 	if (count == 0 || size == 0)
 		return (ft_calloc(1, 1));
 	if (count * size / size != count)
 		return (NULL);
-	start = (void *)malloc(size * count);
+	start = (char *)malloc(size * count);
 	if (!start)
 		return (NULL);
-	ft_bzero(start, size * count);
-	return (start);
+	while (i < size * count)
+	{
+		start[i] = '\0';
+		i++;
+	}
+	return ((void *)start);
 }
