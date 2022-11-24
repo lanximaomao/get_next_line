@@ -6,13 +6,13 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 19:19:02 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 19:30:50 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strjoin_gnl(char *s1, char *s2)
+static char	*ft_strjoin_gnl(char *s1, char *s2)
 {
 	char	*joint_str;
 	size_t	i;
@@ -84,21 +84,7 @@ static char	*ft_out(char *stash)
 	return (NULL);
 }
 
-//static char	*ft_fd_check(int fd, char *stash)
-//{
-//	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
-//		return (NULL);
-//	if (!stash)
-//	{
-//		stash = (char *)ft_calloc(1, 1);
-//		if (!stash)
-//			return (NULL);
-//		stash[0] = '\0';
-//	}
-//	return (stash);
-//}
-
-char	*ft_read(int fd, char *stash)
+static char	*ft_read(int fd, char *stash)
 {
 	char	*buf;
 	int		read_bytes;
