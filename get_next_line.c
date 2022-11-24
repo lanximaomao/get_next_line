@@ -6,7 +6,7 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 16:01:29 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 16:14:13 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	return (joint_str);
 }
 
-//update
 static char	*ft_trim(char *stash)
 {
 	char	*ret;
@@ -77,9 +76,7 @@ static char	*ft_out(char *stash)
 				return (NULL);
 			i = -1;
 			while (++i < len)
-			{
 				nl[i] = stash[i];
-			}
 			nl[i] = '\0';
 			return (nl);
 		}
