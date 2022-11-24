@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:39:34 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/23 20:42:53 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/24 16:02:10 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,6 @@ size_t	ft_strlen_nl(const char *str)
 	if (str[len] == '\n')
 		return (len + 1);
 	return (0);
-}
-
-char	*ft_strjoin_gnl(char *s1, char *s2)
-{
-	char	*joint_str;
-	size_t	i;
-	size_t	j;
-
-	if (!s1 || !s2)
-		return (ft_strdup(s1));
-	joint_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2))
-			+ 1);
-	if (!joint_str)
-		return (NULL);
-	i = 0;
-	while (s1[i] != '\0')
-	{
-		joint_str[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j] != '\0')
-		joint_str[i++] = s2[j++];
-	joint_str[i] = '\0';
-	free(s1);
-	return (joint_str);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -86,7 +60,7 @@ char	*ft_strdup(const char *src)
 
 	i = 0;
 	len = ft_strlen((char *)src);
-	if (!*src && !src)
+	if (!src && !*src)
 		return (NULL);
 	dest = (char *)malloc(sizeof(*src) * (len + 1));
 	if (!dest)
@@ -99,7 +73,6 @@ char	*ft_strdup(const char *src)
 	dest[i] = '\0';
 	return (dest);
 }
-
 
 void	*ft_bzero(void *s, size_t n)
 {

@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/23 20:41:46 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/24 16:02:58 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+
+char	*ft_strjoin_gnl(char *s1, char *s2)
+{
+	char	*joint_str;
+	size_t	i;
+	size_t	j;
+
+	if (!s1 || !s2)
+		return (ft_strdup(s1));
+	joint_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2))
+			+ 1);
+	if (!joint_str)
+		return (NULL);
+	i = 0;
+	while (s1[i] != '\0')
+	{
+		joint_str[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j] != '\0')
+		joint_str[i++] = s2[j++];
+	joint_str[i] = '\0';
+	free(s1);
+	return (joint_str);
+}
+
 //update
 static char	*ft_trim(char *stash)
 {
@@ -31,7 +58,6 @@ static char	*ft_trim(char *stash)
 	return (ret);
 }
 
-//update
 static char	*ft_out(char *stash)
 {
 	int		i;
@@ -39,9 +65,9 @@ static char	*ft_out(char *stash)
 	int		len;
 	char	*nl;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (stash[i])
+	while (stash[++i])
 	{
 		if (stash[i] == '\n' || stash[i + 1] == '\0')
 		{
@@ -49,16 +75,14 @@ static char	*ft_out(char *stash)
 			nl = ft_calloc((len + 1), sizeof(char));
 			if (!nl)
 				return (NULL);
-			i = 0;
-			while (i < len)
+			i = -1;
+			while (++i < len)
 			{
 				nl[i] = stash[i];
-				i++;
 			}
 			nl[i] = '\0';
 			return (nl);
 		}
-		i++;
 	}
 	return (NULL);
 }
@@ -69,7 +93,7 @@ static char	*ft_fd_check(int fd, char *stash)
 		return (NULL);
 	if (!stash)
 	{
-		stash = (char *)ft_calloc(1,1);
+		stash = (char *)ft_calloc(1, 1);
 		if (!stash)
 			return (NULL);
 		stash[0] = '\0';
@@ -79,7 +103,6 @@ static char	*ft_fd_check(int fd, char *stash)
 
 char	*get_next_line(int fd)
 {
-	//char		buf[BUFFER_SIZE + 1];
 	char		*buf;
 	char		*ret;
 	static char	*stash[1024];
@@ -106,25 +129,3 @@ char	*get_next_line(int fd)
 	stash[fd] = ft_trim(stash[fd]);
 	return (ret);
 }
-
-/*
-int	main(int argc, char** argv)
-{
-	int		i;
-	int		fd[10];
-	char	*str;
-
-	i = 1;
-	while (argv[i])
-	{
-		fd[i] = open(argv[i], O_RDWR);
-		printf("my fd is %d\n", fd[i]);
-		str = get_next_line(fd[i]);
-		printf("my next line is %s\n", str);
-		free(str);
-		close(fd[i]);
-		i++;
-	}
-	return (0);
-}
-*/

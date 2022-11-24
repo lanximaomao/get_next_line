@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: linlinsun <linlinsun@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/23 20:53:45 by linlinsun        ###   ########.fr       */
+/*   Updated: 2022/11/24 16:01:29 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_strjoin_gnl(char *s1, char *s2)
+{
+	char	*joint_str;
+	size_t	i;
+	size_t	j;
+
+	if (!s1 || !s2)
+		return (ft_strdup(s1));
+	joint_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2))
+			+ 1);
+	if (!joint_str)
+		return (NULL);
+	i = 0;
+	while (s1[i] != '\0')
+	{
+		joint_str[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j] != '\0')
+		joint_str[i++] = s2[j++];
+	joint_str[i] = '\0';
+	free(s1);
+	return (joint_str);
+}
 
 //update
 static char	*ft_trim(char *stash)
@@ -32,7 +58,6 @@ static char	*ft_trim(char *stash)
 	return (ret);
 }
 
-//update
 static char	*ft_out(char *stash)
 {
 	int		i;
@@ -40,9 +65,9 @@ static char	*ft_out(char *stash)
 	int		len;
 	char	*nl;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (stash[i])
+	while (stash[++i])
 	{
 		if (stash[i] == '\n' || stash[i + 1] == '\0')
 		{
@@ -50,16 +75,14 @@ static char	*ft_out(char *stash)
 			nl = ft_calloc((len + 1), sizeof(char));
 			if (!nl)
 				return (NULL);
-			i = 0;
-			while (i < len)
+			i = -1;
+			while (++i < len)
 			{
 				nl[i] = stash[i];
-				i++;
 			}
 			nl[i] = '\0';
 			return (nl);
 		}
-		i++;
 	}
 	return (NULL);
 }
@@ -70,7 +93,7 @@ static char	*ft_fd_check(int fd, char *stash)
 		return (NULL);
 	if (!stash)
 	{
-		stash = (char *)ft_calloc(1,1);
+		stash = (char *)ft_calloc(1, 1);
 		if (!stash)
 			return (NULL);
 		stash[0] = '\0';
@@ -80,7 +103,6 @@ static char	*ft_fd_check(int fd, char *stash)
 
 char	*get_next_line(int fd)
 {
-	//char		buf[BUFFER_SIZE + 1];
 	char		*buf;
 	char		*ret;
 	static char	*stash;
@@ -108,33 +130,33 @@ char	*get_next_line(int fd)
 	return (ret);
 }
 
-int main()
-{
-	int fd;
-	char *line;
+//int main()
+//{
+//	int fd;
+//	char *line;
 
-	fd = open("nl", O_RDONLY);
-	if (fd == -1)
-		return (0);
-	line = get_next_line(fd);
-	printf("1st %s", line);
-	line = get_next_line(fd);
-	printf("2nd %s", line);
-	line = get_next_line(fd);
-	printf("3rd %s", line);
-	line = get_next_line(fd);
-	printf("4th %s", line);
-	line = get_next_line(fd);
-	printf("5th %s", line);
-	line = get_next_line(fd);
-	printf("6th %s", line);
-	line = get_next_line(fd);
-	printf("7th %s", line);
-	line = get_next_line(fd);
-	printf("8th %s", line);
+//	fd = open("nl", O_RDONLY);
+//	if (fd == -1)
+//		return (0);
+//	line = get_next_line(fd);
+//	printf("1st %s", line);
+//	line = get_next_line(fd);
+//	printf("2nd %s", line);
+//	line = get_next_line(fd);
+//	printf("3rd %s", line);
+//	line = get_next_line(fd);
+//	printf("4th %s", line);
+//	line = get_next_line(fd);
+//	printf("5th %s", line);
+//	line = get_next_line(fd);
+//	printf("6th %s", line);
+//	line = get_next_line(fd);
+//	printf("7th %s", line);
+//	line = get_next_line(fd);
+//	printf("8th %s", line);
 
-	//while ((line = get_next_line(fd)) != NULL)
-	//	printf("%s", line);
+//	//while ((line = get_next_line(fd)) != NULL)
+//	//	printf("%s", line);
 
-	return (0);
-}
+//	return (0);
+//}
