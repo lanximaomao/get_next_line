@@ -6,13 +6,13 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 16:18:12 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 16:14:13 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_strjoin_gnl(char *s1, char *s2)
+char	*ft_strjoin_gnl(char *s1, char *s2)
 {
 	char	*joint_str;
 	size_t	i;
@@ -126,3 +126,34 @@ char	*get_next_line(int fd)
 	stash = ft_trim(stash);
 	return (ret);
 }
+
+//int main()
+//{
+//	int fd;
+//	char *line;
+
+//	fd = open("nl", O_RDONLY);
+//	if (fd == -1)
+//		return (0);
+//	line = get_next_line(fd);
+//	printf("1st %s", line);
+//	line = get_next_line(fd);
+//	printf("2nd %s", line);
+//	line = get_next_line(fd);
+//	printf("3rd %s", line);
+//	line = get_next_line(fd);
+//	printf("4th %s", line);
+//	line = get_next_line(fd);
+//	printf("5th %s", line);
+//	line = get_next_line(fd);
+//	printf("6th %s", line);
+//	line = get_next_line(fd);
+//	printf("7th %s", line);
+//	line = get_next_line(fd);
+//	printf("8th %s", line);
+
+//	//while ((line = get_next_line(fd)) != NULL)
+//	//	printf("%s", line);
+
+//	return (0);
+//}
