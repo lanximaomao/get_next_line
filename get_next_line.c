@@ -6,7 +6,7 @@
 /*   By: lsun <lsun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:35:41 by lsun              #+#    #+#             */
-/*   Updated: 2022/11/24 17:02:50 by lsun             ###   ########.fr       */
+/*   Updated: 2022/11/24 17:18:48 by lsun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	if (!s1 || !s2)
-		return (ft_strdup(s1));
+	if (!s1 || !s2) // &&
+		return (ft_strdup(s1));// return (null)
 	joint_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2))
 			+ 1);
 	if (!joint_str)
@@ -77,7 +77,7 @@ static char	*ft_out(char *stash)
 			i = -1;
 			while (++i < len)
 				nl[i] = stash[i];
-			nl[i] = '\0';
+			nl[i] = '\0';//
 			return (nl);
 		}
 	}
@@ -117,14 +117,19 @@ char	*get_next_line(int fd)
 		while (read_bytes != 0 && ft_strchr(buf, '\n') == 0)
 		{
 			read_bytes = read(fd, buf, BUFFER_SIZE);
-			//
+			if (read_bytes == -1)
+			{
+				free(buf); //
+				return (NULL);//
+			}
 			buf[read_bytes] = '\0';
 			stash = ft_strjoin_gnl(stash, buf);
+			if (!stash) //
+				return (NULL); //
 		}
 	}
 	free(buf);
 	ret = ft_out(stash);
-	//if stash is null
 	stash = ft_trim(stash);
 	return (ret);
 }
