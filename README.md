@@ -11,17 +11,17 @@ Makre sure that your function works as expected both when reading a file and whe
 
 lseek() and global variables are **Forbidden**.
 
-<br><br>
+<br>
 
 ## Language used
 [![Language used](https://skills.thijs.gg/icons?i=c)](https://skills.thijs.gg)
 
-<br><br>
+<br>
 
 ## Usage
 Because you will have to read files in get_next_line(), add this option to your compiler call: -D BUFFER_SIZE=n. It will define the buffer size for read(). For example: cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 <files>.c
 
-<br><br>
+<br>
 
 ## Testing
 
@@ -29,7 +29,7 @@ Because you will have to read files in get_next_line(), add this option to your 
 
 + [gnlTester](https://github.com/Tripouille/gnlTester.git)
 
-<br><br>
+<br>
 
 ## Related Projects
 
