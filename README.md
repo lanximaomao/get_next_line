@@ -9,7 +9,7 @@ Makre sure that your function works as expected both when reading a file and whe
 
 **Please note** that the returned line should include the terminating \n character, except if the end of file was reached and does not end with a \n character.
 
-**Forbidden** lseek() and global variables are forbidden.
+lseek() and global variables are **Forbidden**.
 
 <br><br>
 
